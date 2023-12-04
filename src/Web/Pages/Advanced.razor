@@ -1,0 +1,94 @@
+@page "/advanced"
+
+<h3>Advanced Form</h3>
+
+<EditForm Model="@timeCalculation" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="row">
+        <div class="input-group col-md-4">
+            <label for="timeSaved">Time Saved:</label>
+            <InputNumber id="timeSaved" class="form-control" @bind-Value="@timeCalculation.TimeSaved" />
+            <InputSelect id="timeSavedUnit" class="form-control" @bind-Value="@timeCalculation.TimeSavedUnit">
+                @foreach (var unit in Enum.GetValues(typeof(TimeUnit)))
+                {
+                    <option value="@unit">@unit</option>
+                }
+            </InputSelect>
+            <InputSelect id="howOften" class="form-control" @bind-Value="@timeCalculation.HowOften">
+                @foreach (var frequency in Enum.GetValues(typeof(TimeFrequency)))
+                {
+                    <option value="@frequency">@frequency</option>
+                }
+            </InputSelect>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-group col-md-4">
+            <label for="timeSpent">Time Spent:</label>
+            <InputNumber id="timeSpent" class="form-control" @bind-Value="@timeCalculation.TimeSpent" />
+            <InputSelect id="timeSpentUnit" class="form-control" @bind-Value="@timeCalculation.TimeSpentUnit">
+                @foreach (var unit in Enum.GetValues(typeof(TimeUnit)))
+                {
+                    <option value="@unit">@unit</option>
+                }
+            </InputSelect>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <label for="fudgeFactor">Fudge Factor:</label>
+            <InputNumber id="fudgeFactor" class="form-control" @bind-Value="@timeCalculation.FudgeFactor" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class=" col-md-4">
+            <label for="timeHorizonInYears">How Long Is This Going to Last? (in years):</label>
+            <InputNumber id="timeHorizonInYears" class="form-control"
+                @bind-Value="@timeCalculation.TimeHorizonInYears" />
+        </div>
+    </div>
+    <div class="row">
+        <div class=" col-md-4">
+            <label for="numberOfPeople">Number of People:</label>
+            <InputNumber id="numberOfPeople" class="form-control" @bind-Value="@timeCalculation.NumberOfPeople" />
+        </div>
+    </div>
+    <div class="row">
+        <div class=" col-md-4">
+            <label for="costOfYourTime">Cost of Your Time:</label>
+            <InputNumber id="costOfYourTime" class="form-control" @bind-Value="@timeCalculation.CostOfYourTime" />
+        </div>
+    </div>
+    <div class="row">
+        <div class=" col-md-4">
+            <label for="costOfBeneficiariesTime">Cost of Beneficiaries Time:</label>
+            <InputNumber id="costOfBeneficiariesTime" class="form-control"
+                @bind-Value="@timeCalculation.CostOfBeneficiariesTime" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" class="btn btn-secondary" onclick="ClearFields">Clear</button>
+
+</EditForm>
+<ResultDisplay Result="@result" />
+
+@code {
+    private TimeCalculation timeCalculation = new TimeCalculation();
+    private TimeCalculationResult? result = null;
+
+    private void HandleSubmit()
+    {
+        result = timeCalculation.CalculateResult();
+    }
+
+    private void ClearFields()
+    {
+        timeCalculation = new TimeCalculation();
+        result = null;
+    }
+}
