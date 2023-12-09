@@ -65,22 +65,22 @@ namespace ShouldIAutomateThat.Models
 
         private decimal CalculateTimeSaved()
         {
-            return CalculateHoursPerYear(ConvertToHours(TimeSaved, TimeSavedUnit), HowOften) * TimeHorizonInYears;
+            return Math.Round(CalculateHoursPerYear(ConvertToHours(TimeSaved, TimeSavedUnit), HowOften) * TimeHorizonInYears,2);
         }
 
         private decimal CalculateCostSaved(decimal timeSavedInHours)
         {
-            return NumberOfPeople * timeSavedInHours * CostOfBeneficiariesTime;
+            return Math.Round(NumberOfPeople * timeSavedInHours * CostOfBeneficiariesTime, 2);
         }
 
         private decimal CalculateTimeSpent()
         {
-            return ConvertToHours(TimeSpent, TimeSpentUnit) * FudgeFactor;
+            return Math.Round(ConvertToHours(TimeSpent, TimeSpentUnit) * FudgeFactor, 2);
         }
 
         private decimal CalculateCostToImplement(decimal timeSpentInHours)
         {
-            return timeSpentInHours * CostOfYourTime;
+            return Math.Round(timeSpentInHours * CostOfYourTime, 2);
         }
 
         private static decimal CalculateHoursPerYear(decimal hours, TimeFrequency frequency)

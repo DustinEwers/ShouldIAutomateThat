@@ -2,14 +2,23 @@
 
 @if (HasValues)
 {
-    <div>
-        <h3>Time Calculation Result:</h3>
-        <p>Hours Saved: @Result?.HoursSaved</p>
-        <p>Cost Saved: @Result?.CostSaved</p>
-        <p>Hours Spent: @Result?.HoursSpent</p>
-        <p>Cost to Implement: @Result?.CostToImplement</p>
-        
-        <p>Result: @Result?.ShouldIAutomateThat</p>
+    <div class="row">
+        <div class="col-md-4">
+            <h3>Time Calculation Result:</h3>
+            <p>Hours Saved: @Result?.HoursSaved</p>
+            <p>Cost Saved: @Result?.CostSaved</p>
+            <p>Hours Spent: @Result?.HoursSpent</p>
+            <p>Cost to Implement: @Result?.CostToImplement</p>
+
+            @if(Result?.ShouldIAutomateThat == true)
+            {
+                <p>Should I Automate That? Yes!</p>
+            }
+            else
+            {
+                <p>Should I Automate That? No!</p>
+            }
+        </div>
     </div>
 }
 

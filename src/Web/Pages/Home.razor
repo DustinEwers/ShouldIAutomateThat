@@ -6,3 +6,79 @@
 
 <p>Inspired by <a target="_blank" href="https://xkcd.com/1205/">https://xkcd.com/1205/</a> and <a target="_blank" href="https://xkcd.com/1319/">https://xkcd.com/1319/</a>, this app helps you figure out if you should automate a task or just do the damn thing.</p>
 
+
+<h3>Basic Calculator</h3>
+
+<EditForm Model="@timeCalculation" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="row">
+        <div class="col-md-4">
+            <label for="timeSaved">Time Saved (per hour, day, etc...):</label>
+            <div class="input-group">
+                <InputNumber id="timeSaved" class="form-control" @bind-Value="@timeCalculation.TimeSaved" />
+                <InputSelect id="timeSavedUnit" class="form-control" @bind-Value="@timeCalculation.TimeSavedUnit">
+                    @foreach (var unit in Enum.GetValues(typeof(TimeUnit)))
+                    {
+                        <option value="@unit">@unit</option>
+                    }
+                </InputSelect>
+                <InputSelect id="howOften" class="form-control" @bind-Value="@timeCalculation.HowOften">
+                    @foreach (var frequency in Enum.GetValues(typeof(TimeFrequency)))
+                    {
+                        <option value="@frequency">@frequency</option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="timeSpent">Time Spent Building the Automation:</label>
+            <div class="input-group">
+                <InputNumber id="timeSpent" class="form-control" @bind-Value="@timeCalculation.TimeSpent" />
+                <InputSelect id="timeSpentUnit" class="form-control" @bind-Value="@timeCalculation.TimeSpentUnit">
+                    @foreach (var unit in Enum.GetValues(typeof(TimeUnit)))
+                    {
+                        <option value="@unit">@unit</option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="fudgeFactor">Fudge Factor (How bad do you suck at estimating?):</label>
+                <InputNumber id="fudgeFactor" class="form-control" @bind-Value="@timeCalculation.FudgeFactor" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-secondary" @onclick="ClearFields">Clear</button>
+        </div>
+    </div>
+
+</EditForm>
+<ResultDisplay Result="@result" />
+
+@code {
+    private TimeCalculation timeCalculation = new TimeCalculation();
+    private TimeCalculationResult? result = null;
+
+    private void HandleSubmit()
+    {
+        result = timeCalculation.CalculateResult();
+    }
+
+    private void ClearFields()
+    {
+        timeCalculation = new TimeCalculation();
+        result = null;
+    }
+}
+
